@@ -11,6 +11,7 @@ export type Route = {
   isBaseline: boolean;
 };
 
+
 export type ComparisonRow = {
   routeId: string;
   baselineGhg: number;
