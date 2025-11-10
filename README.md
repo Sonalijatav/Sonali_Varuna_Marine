@@ -1,157 +1,137 @@
 
-# ⚓ FuelEU Maritime — Compliance Module (Frontend + Backend)
 
-A complete **Fuel EU Maritime compliance platform** built with a **clean hexagonal architecture** across **frontend** and **backend**.  
-Implements domain logic for **routes**, **compliance balance (CB)**, **banking**, and **pooling**, along with a **React + Tailwind** dashboard consuming backend APIs.
+# 🛳️ FuelEU Maritime — Compliance Suite (Frontend + Backend)
 
----
-
-## 🧭 Overview
-
-- **Frontend:** React + TypeScript + TailwindCSS (Vite)
-- **Backend:** Node.js + TypeScript + Express + PostgreSQL
-- **Architecture:** Hexagonal (Ports & Adapters / Clean Architecture)
-- **Docs:**  
-  - `AGENT_WORKFLOW.md` — AI agent workflow  
-  - `REFLECTION.md` — reflection essay  
-- **Testing:** Vitest for backend unit/integration tests  
+A compact implementation of a **Fuel EU Maritime compliance** system using a **hexagonal architecture** on both client and server. It includes domain logic for **routes**, **compliance balance (CB)**, **banking**, and **pooling**, along with a **React + Tailwind** dashboard that consumes the backend APIs.
 
 ---
 
-## 🧱 Architecture
+## 🧭 What’s Inside
 
-This project follows a strict **Hexagonal (Ports & Adapters)** architecture for clarity and testability.
-
-```
-
-backend/src/
-├── core/
-│    ├── domain/             # domain entities & value objects
-│    ├── application/        # business use-cases (ComputeCB, Bank, Pool)
-│    └── ports/              # input/output ports (interfaces)
-├── adapters/
-│    ├── inbound/http/       # Express controllers (inbound adapters)
-│    └── outbound/postgres/  # Postgres repositories (outbound adapters)
-├── infrastructure/
-│    ├── db/                 # migrations + seeds
-│    └── server/             # composition root
-└── shared/                  # constants, helpers
-
-frontend/src/
-├── core/                    # domain models & types (no React)
-├── adapters/
-│    ├── ui/                 # React pages/components (inbound)
-│    └── infrastructure/     # API client (outbound)
-└── index.css / main.tsx     # entrypoint
-
-````
-
-📐 **Core** is framework-independent.  
-💡 **Adapters** implement ports to connect core logic with frameworks.  
-🚀 **Infrastructure** wires dependencies and executes the app.
+* **Frontend:** React + TypeScript + TailwindCSS (Vite)
+* **Backend:** Node.js + TypeScript + Express + PostgreSQL
+* **Architecture:** Hexagonal / Ports & Adapters
+* **Docs:** `AGENT_WORKFLOW.md` (agent trail), `REFLECTION.md` (short essay)
+* **Tests:** Vitest-based unit tests for core use-cases + a tiny HTTP integration test (in-memory adapters)
 
 ---
 
-## ⚙️ Backend Setup & Usage
+## 🧱 Project Layout (Hexagonal)
 
-### 🔧 1. Setup Environment
-Copy `.env.example` to `.env` and configure:
-```bash
-DATABASE_URL=postgres://user:password@localhost:5432/fueleu
-PORT=3001
-````
+```
+backend/src
+  core/
+    domain/            # pure types only
+    application/       # business/use-case logic
+    ports/             # interfaces for repos/services
+  adapters/
+    inbound/http/      # Express HTTP (inbound adapter)
+    outbound/postgres/ # Postgres repositories (outbound)
+  infrastructure/
+    db/                # migrations + seed data
+    server/            # app composition & bootstrapping
+  shared/              # cross-cutting constants/utilities
 
-### 📦 2. Install Dependencies
-
-```bash
-cd backend
-npm install
+frontend/src
+  core/                # framework-agnostic domain
+  adapters/
+    ui/                # React components/pages (inbound)
+    infrastructure/    # API client (outbound)
 ```
 
-### 🗃️ 3. Run Database Migration & Seed
-
-```bash
-npm run migrate
-npm run seed
-```
-
-### 🏁 4. Start the Server
-
-```bash
-npm run dev
-```
-
-Your backend now runs at 👉 **[http://localhost:3001](http://localhost:3001)**
-
-### ⚡ Backend Scripts
-
-| Script            | Description                     |
-| ----------------- | ------------------------------- |
-| `npm run dev`     | Start development server        |
-| `npm run migrate` | Run database migrations         |
-| `npm run seed`    | Seed sample data                |
-| `npm run test`    | Run unit & integration tests    |
-| `npm run build`   | Build TypeScript for production |
+The **core** stays framework-free. **Adapters** implement the **ports**. **Infrastructure** wires everything together.
 
 ---
 
-## 💻 Frontend Setup & Usage
+## ⚙️ Backend — Setup & Run
 
-### 1️⃣ Install Dependencies
+1. Configure environment:
 
-```bash
-cd frontend
-npm install
-```
+   ```bash
+   cd backend
+   cp .env.example .env   # set DATABASE_URL and PORT if needed
+   ```
 
-### 2️⃣ Start the Development Server
+2. Install packages:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm i
+   ```
 
-Runs on 👉 **[http://localhost:5173](http://localhost:5173)**
+3. Run database migration:
 
-> The Vite server proxies API calls to `http://localhost:3001`.
+   ```bash
+   npm run migrate
+   ```
+
+4. Seed initial data:
+
+   ```bash
+   npm run seed
+   ```
+
+5. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+   Server lives at **[http://localhost:3001](http://localhost:3001)**
+
+### 📜 NPM Scripts
+
+* `npm run test` — runs Vitest unit + integration tests (uses in-memory adapters)
+* `npm run build` + `npm start` — compile and run the built server
 
 ---
 
-## 🔗 API Endpoints
+## 💻 Frontend — Setup & Run
 
-| Method | Endpoint                              | Description                     |
-| ------ | ------------------------------------- | ------------------------------- |
-| `GET`  | `/routes`                             | List seeded routes              |
-| `POST` | `/routes/:id/baseline`                | Set baseline route              |
-| `GET`  | `/routes/comparison`                  | Compare baseline vs others      |
-| `GET`  | `/compliance/cb?shipId&year`          | Compute CB snapshot             |
-| `GET`  | `/compliance/adjusted-cb?shipId&year` | Adjusted CB (after banking)     |
-| `GET`  | `/banking/records?shipId&year`        | Banking records                 |
-| `POST` | `/banking/bank`                       | Bank surplus CB                 |
-| `POST` | `/banking/apply`                      | Apply banked surplus            |
-| `POST` | `/pools`                              | Pool ships and redistribute CBs |
+1. Install deps:
 
-🧮 **Formula Reference:**
+   ```bash
+   cd frontend
+   npm i
+   ```
 
-```
-Energy (MJ) = fuelConsumption × 41,000
-Compliance Balance = (Target (89.3368) − Actual) × Energy
-```
+2. Launch Vite:
+
+   ```bash
+   npm run dev
+   ```
+
+   App runs at **[http://localhost:5173](http://localhost:5173)**
+
+> The Vite dev server is configured to proxy API requests to **[http://localhost:3001](http://localhost:3001)**.
+
+---
+
+## 🔗 API Map
+
+* `GET /routes` — fetch seeded routes
+* `POST /routes/:id/baseline` — choose baseline route
+* `GET /routes/comparison` — compare baseline vs others, with percent difference & compliance flag
+* `GET /compliance/cb?shipId&year` — compute and persist CB snapshot
+* `GET /compliance/adjusted-cb?shipId&year` — CB adjusted by banked applications
+* `GET /banking/records?shipId&year` — banking ledger summary
+* `POST /banking/bank` — store a positive CB for later use
+* `POST /banking/apply` — apply banked surplus to cover deficits
+* `POST /pools` — greedy redistribution; returns before/after CB per member
+
+### 🧩 Calculation Notes
+
+* In sample data, `shipId` corresponds to `routeId` (e.g., `R001`).
+* Energy scope: `fuelConsumption × 41,000 MJ/t`.
+* CB formula: `(Target (89.3368) − Actual) × Energy`.
 
 ---
 
 ## 🧪 Testing
 
-Backend includes **unit + integration** tests using Vitest:
+* Core unit tests: `ComputeCB`, `ComputeComparison`, `BankSurplus`, `ApplyBanked`, `CreatePool`
+* Minimal HTTP integration test (no DB) using in-memory adapters
 
-| Test File            | Description                               |
-| -------------------- | ----------------------------------------- |
-| `computeCB.test.ts`  | Verifies compliance balance calculation   |
-| `comparison.test.ts` | Checks baseline vs comparison routes      |
-| `banking.test.ts`    | Validates banking/applying logic          |
-| `pooling.test.ts`    | Validates pool redistribution             |
-| `http.test.ts`       | Integration test using in-memory adapters |
-
-Run tests:
+Run:
 
 ```bash
 cd backend
@@ -160,55 +140,25 @@ npm test
 
 ---
 
-## 🖼️ UI Preview
+## 🖼️ UI Previews
 
-### 🗺️ Routes Tab
+* **Routes Tab** — filters by vessel/fuel/year; select baseline
+  *(`docs/screenshots/Routes.png`)*
 
-Displays all seeded routes, allows filtering, and lets you set a baseline. <img src="docs/screenshots/Routes.png" alt="Routes Tab" width="750"/>
+* **Compare Tab** — baseline vs others with % difference + simple chart
+  *(`docs/screenshots/Compare.png`)*
 
----
+* **Banking Tab** — shows CB, bank/apply actions with validation
+  *(`docs/screenshots/Banking.png`)*
 
-### 📊 Compare Tab
-
-Shows baseline vs comparison data, with % difference and compliance indicators. <img src="docs/screenshots/Compare.png" alt="Compare Tab" width="750"/>
-
----
-
-### 🏦 Banking Tab
-
-Displays Compliance Balance (CB), allows banking surplus and applying it to deficit years. <img src="docs/screenshots/Banking.png" alt="Banking Tab" width="750"/>
+* **Pooling Tab** — input members, validate sum, create pool & see outcomes
+  *(`docs/screenshots/Pooling.png`)*
 
 ---
 
-### ⚖️ Pooling Tab
+## 🧾 Extra Notes
 
-Implements pooling logic to redistribute CBs between ships. <img src="docs/screenshots/Pooling.png" alt="Pooling Tab" width="750"/>
+* **TypeScript strict** is enabled; ESLint/Prettier can be added as desired.
+* **PostgreSQL** integration uses `pg` in the outbound adapter.
+* Tests avoid DB coupling by relying on in-memory repositories.
 
----
-
-## 🧾 Development Notes
-
-* ✅ **TypeScript strict mode** enabled
-* ✅ **Framework-agnostic core**
-* ✅ **Clean separation of layers**
-* ✅ **Postgres adapter** built using `pg`
-* ✅ **Frontend UI** built with TailwindCSS + minimal components
-* ✅ **AI Agent usage** documented in `AGENT_WORKFLOW.md`
-
----
-
-
-## 🧠 About
-
-Developed as part of the **FuelEU Maritime – FullStack Developer Assignment**, demonstrating:
-
-* Clean architecture design
-* Strong TypeScript modeling
-* Real-world backend + frontend integration
-* Proper AI-assisted documentation and testing
-
----
-
-⭐ **Built with clarity, domain focus, and testability in mind.**
-
- 
