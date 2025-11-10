@@ -11,6 +11,7 @@ class InMemComplianceRepo {
   async getSnapshot(shipId: string, year: number) { return this.snap[shipId+year] ?? null; }
 }
 
+
 describe('ComputeCB', () => {
   it('computes CB using target and energy', async () => {
     const route = { id:1, routeId:'R001', vesselType:'Container', fuelType:'HFO', year:2024, ghgIntensity:91, fuelConsumption:5000, distance:0, totalEmissions:0, isBaseline:false };
