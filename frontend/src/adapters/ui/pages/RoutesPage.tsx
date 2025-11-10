@@ -19,6 +19,8 @@ export function RoutesPage() {
     }
   }
 
+
+  
   useEffect(() => { load() }, [])
 
   const vesselTypes = useMemo(() => Array.from(new Set(routes.map(r => r.vesselType))), [routes])
