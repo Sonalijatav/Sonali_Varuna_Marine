@@ -5,6 +5,7 @@ class InMemRoutesRead {
   constructor(private r: any) {}
   async findByShipAndYear(id: string, year: number) { return this.r[id+year] ?? null; }
 }
+
 class InMemComplianceRepo {
   snap: any = {};
   async upsertSnapshot(shipId: string, year: number, cb: number) { this.snap[shipId+year] = { id:1, shipId, year, cb }; return this.snap[shipId+year]; }
