@@ -12,6 +12,7 @@ class InMemBankingRepo {
     async getEntries(shipId, year) { return this.list.filter(e => e.shipId === shipId && e.year === year); }
     async addEntry(shipId, year, amount) { const e = { id: this.list.length + 1, shipId, year, amount, createdAt: new Date() }; this.list.push(e); return e; }
 }
+
 describe('Banking', () => {
     it('banks positive CB and applies to deficit', async () => {
         const comp = new InMemComplianceRepo();
