@@ -1,5 +1,6 @@
 const base: string = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE) || '';
 
+
 async function fetchJson(path: string, init?: RequestInit) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), 12000);
