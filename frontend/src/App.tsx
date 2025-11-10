@@ -4,6 +4,7 @@ import { ComparePage } from './adapters/ui/pages/ComparePage'
 import { BankingPage } from './adapters/ui/pages/BankingPage'
 import { PoolingPage } from './adapters/ui/pages/PoolingPage'
 
+
 export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
