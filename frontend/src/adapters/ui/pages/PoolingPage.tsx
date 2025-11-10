@@ -12,6 +12,7 @@ export function PoolingPage() {
     setMembers(m => m.map((x, idx) => idx === i ? { ...x, ...patch } : x))
   }
 
+  
   async function loadCBs() {
     setErr('')
     const next: any[] = []
