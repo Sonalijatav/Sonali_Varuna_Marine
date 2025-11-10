@@ -20,6 +20,7 @@ export function ComparePage() {
     })()
   }, [])
 
+  
   return (
     <div className="space-y-6">
       {error && (
