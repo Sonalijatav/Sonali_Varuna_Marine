@@ -18,6 +18,7 @@ function makeApp() {
     const bankRepo = { list: [], getEntries: async (s, y) => bankRepo.list.filter((e) => e.shipId === s && e.year === y), addEntry: async (s, y, a) => { const e = { id: bankRepo.list.length + 1, shipId: s, year: y, amount: a, createdAt: new Date() }; bankRepo.list.push(e); return e; } };
     return createApp({ routesRepo, routesReadRepo, complianceRepo: compRepo, bankingRepo: bankRepo });
 }
+
 describe('HTTP', () => {
     it('serves routes and comparison', async () => {
         const app = makeApp();
