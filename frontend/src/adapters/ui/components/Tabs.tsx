@@ -4,6 +4,7 @@ export function Tabs(props: { tabs: { key: string; label: string; content: React
   const { tabs } = props
   const [active, setActive] = useState(tabs[0].key)
 
+  
   return (
     <div className="w-full">
       <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-1">
