@@ -5,7 +5,7 @@
 /* App base */
 body { @apply bg-gradient-to-br from-slate-50 via-white to-indigo-50 text-gray-900 min-h-screen antialiased; }
 
-/* Buttons */
+/* Buttons  */ 
 button {
   @apply inline-flex items-center gap-2 rounded-md px-3.5 py-2 font-medium
   bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800
