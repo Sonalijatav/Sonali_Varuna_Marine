@@ -13,6 +13,7 @@ export function BankingPage() {
   const [loading, setLoading] = useState(false)
   const [posting, setPosting] = useState<'bank' | 'apply' | null>(null)
 
+  
   async function load() {
     setErr(''); setMsg(''); setLoading(true)
     try {
