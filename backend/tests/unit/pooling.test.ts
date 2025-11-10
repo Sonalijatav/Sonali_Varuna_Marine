@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { CreatePoolUseCase } from '../../src/core/application/CreatePool';
 
+
+
 describe('Pooling', () => {
   it('balances surplus to deficits greedily', () => {
     const res = new CreatePoolUseCase().exec([
