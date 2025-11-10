@@ -6,6 +6,7 @@ class InMemComplianceRepo {
     async upsertSnapshot(shipId, year, cb) { const v = { id: 1, shipId, year, cb }; this.map.set(shipId + year, v); return v; }
     async getSnapshot(shipId, year) { return this.map.get(shipId + year) ?? null; }
 }
+
 class InMemBankingRepo {
     list = [];
     async getEntries(shipId, year) { return this.list.filter(e => e.shipId === shipId && e.year === year); }
