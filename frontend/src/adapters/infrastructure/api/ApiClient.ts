@@ -21,6 +21,7 @@ async function fetchJson(path: string, init?: RequestInit) {
   }
 }
 
+
 export const api = {
   getRoutes: () => fetchJson('/routes'),
   setBaseline: (id: number) => fetchJson(`/routes/${id}/baseline`, { method: 'POST' }),
