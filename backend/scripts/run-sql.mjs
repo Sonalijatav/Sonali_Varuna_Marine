@@ -17,6 +17,8 @@ if (!url) {
   process.exit(1);
 }
 
+
+
 const pool = new Pool({ connectionString: url });
 pool.query(sql)
   .then(() => console.log('SQL applied:', file))
